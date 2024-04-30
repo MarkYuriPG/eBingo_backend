@@ -16,4 +16,7 @@ public class BingoCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_id")
     private int CardId;
+
+    @Column(name = "gameCode")
+    private String GameCode;
 }

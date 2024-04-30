@@ -23,7 +23,7 @@ public class GameService {
         return gameRepository.findAll();
     }
 
-    public GameModel createGame() {
+    public GameModel Create() {
         GameModel game = new GameModel();
         game.setGameCode(generateGameCode());   
         return gameRepository.save(game);
