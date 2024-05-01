@@ -23,6 +23,11 @@ public class GameService {
         return gameRepository.findAll();
     }
 
+    public GameModel GetById(String code)
+    {
+        return gameRepository.findById(code).orElseThrow();
+    }
+
     public GameModel Create() {
         GameModel game = new GameModel();
         game.setGameCode(generateGameCode());   
