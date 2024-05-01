@@ -1,8 +1,13 @@
 package com.ebingo.api.Models;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -13,4 +18,8 @@ public class GameModel {
     @Id
     @Column(name = "code")
     private String gameCode;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "game_card", referencedColumnName = "code")
+    private List<BingoCard> cards;
 }

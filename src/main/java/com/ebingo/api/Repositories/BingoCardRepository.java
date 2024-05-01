@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.ebingo.api.Models.BingoCard;
 
 @Repository
-public interface BingoCardRepository extends JpaRepository<BingoCard, Integer>{
+public interface BingoCardRepository extends JpaRepository<BingoCard, String>{
 }
