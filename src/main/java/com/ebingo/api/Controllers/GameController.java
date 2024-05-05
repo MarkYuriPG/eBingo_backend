@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ebingo.api.Models.BingoCard;
 import com.ebingo.api.Models.GameModel;
 import com.ebingo.api.Services.GameService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +58,17 @@ public class GameController {
         }
     }
     
+    @GetMapping("/cards/bcode={gameCode}")
+    public ResponseEntity<List<BingoCard>> GetCards(@PathVariable String gameCode)
+    {
+        try{
+            List<BingoCard> cards = gameService.GetCards(gameCode);
+            return ResponseEntity.ok(cards);
+        }catch(NoSuchElementException e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
     @PostMapping("/create")
     public ResponseEntity<GameModel> CreateGame()
     {
@@ -69,6 +81,19 @@ public class GameController {
             return ResponseEntity.ok(game);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/rollball/bcode={gameCode}")
+    public ResponseEntity<Integer> RollBall(@PathVariable String gameCode)
+    {
+        try {
+            int rolledNumber = gameService.rollBall(gameCode);
+            return ResponseEntity.ok(rolledNumber);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch(IllegalStateException i){
+            return ResponseEntity.badRequest().build();
         }
     }
 }

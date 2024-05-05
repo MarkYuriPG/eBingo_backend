@@ -21,29 +21,7 @@ public class BingoCard {
     @ElementCollection
     @Column(name = "card_numbers")
     private Map<String, List<Integer>> card;
-    // @Column(name = "bingo_numbers_json", columnDefinition = "TEXT")
-    // private String bingoNumbersJson;
 
-    // public void setBingoNumbers(List<Integer> bingoNumbers) {
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     try {
-    //         this.bingoNumbersJson = objectMapper.writeValueAsString(bingoNumbers);
-    //     } catch (JsonProcessingException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
-
-    // public List<Integer> getBingoNumbers() {
-    //     if (this.bingoNumbersJson == null) {
-    //         return Collections.emptyList();
-    //     }
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     try {
-    //         return objectMapper.readValue(this.bingoNumbersJson, new TypeReference<List<Integer>>() {});
-    //     } catch (JsonProcessingException e) {
-    //         // Handle deserialization error
-    //         e.printStackTrace();
-    //         return Collections.emptyList();
-    //     }
-    // }
+    @Column(name = "code")
+    private String gameCode;
 }

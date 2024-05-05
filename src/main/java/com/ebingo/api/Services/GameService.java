@@ -7,6 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ebingo.api.Models.BingoCard;
 import com.ebingo.api.Models.GameModel;
 import com.ebingo.api.Repositories.GameRepository;
 
@@ -27,6 +28,16 @@ public class GameService {
     public GameModel GetById(String code)
     {
         return gameRepository.findById(code).orElseThrow();
+    }
+
+    public List<BingoCard> GetCards(String code)
+    {
+        GameModel game = GetById(code);
+        if (game != null) {
+            return game.getCards();
+        } else {
+            return null;
+        }
     }
 
     public GameModel Create() {
@@ -75,7 +86,28 @@ public class GameService {
             return null;
         }
     }
+
+    public int rollBall(String code) {
+        // Generate a random number between 1 and 75
+        // Get the game by its code
+        GameModel game = GetById(code);
+
+        if (game.getRolledNumbers().size() >= 75) {
+            throw new IllegalStateException("All numbers have been rolled");
+        }
     
+        int rolledNumber;
+        // Add the rolled number to the game's rolledNumbers list
+        do {
+            rolledNumber = (int) (Math.random() * 75) + 1;
+        } while (game.getRolledNumbers().contains(rolledNumber));
+
+        game.getRolledNumbers().add(rolledNumber);
+        // Save the updated game
+        gameRepository.save(game);
+        // Return the rolled number
+        return rolledNumber;
+    }
 
     private String generateGameCode() {
         return RandomStringUtils.randomAlphanumeric(8);

@@ -10,6 +10,7 @@ import com.ebingo.api.Models.BingoCard;
 import com.ebingo.api.Services.BingoCardService;
 import com.ebingo.api.Services.GameService;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,9 +27,10 @@ public class BingoCardController {
     private BingoCardService cardService;
     private GameService gameService;
 
-    public BingoCardController(BingoCardService cardService)
+    public BingoCardController(BingoCardService cardService, GameService gameService)
     {
         this.cardService = cardService;
+        this.gameService = gameService;
     }
 
     @GetMapping("")
@@ -57,17 +59,23 @@ public class BingoCardController {
     // }
     
     @GetMapping("/bcode={gameCode}")
-    public ResponseEntity<BingoCard> GetCard(@PathVariable String code) {
-        if (gameService.GetById(code) == null) {
+    public ResponseEntity<BingoCard> GetCard(@PathVariable String gameCode) {
+        if (gameService.GetById(gameCode) == null) {
             return ResponseEntity.notFound().build();
         }
 
         try {
-            BingoCard card = cardService.Create();
+            BingoCard card = cardService.Create(gameCode);
             return ResponseEntity.ok(card);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
+    @GetMapping("/checkwin/playtoken={token}")
+    public ResponseEntity<Integer> checkWin(@PathVariable String token)
+    {
+        int result = cardService.checkWin(token);
+        return ResponseEntity.ok(result);
+    }
 }
